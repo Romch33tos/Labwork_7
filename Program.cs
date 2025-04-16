@@ -18,7 +18,7 @@ namespace BinaryTree
 
       while (true)
       {
-        Console.WriteLine("Список опций:")
+        Console.WriteLine("Список опций:");
         Console.WriteLine("1. Прямой обход;");
         Console.WriteLine("2. Обратный обход;");
         Console.WriteLine("3. Центральный обход;");
