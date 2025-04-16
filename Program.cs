@@ -18,13 +18,14 @@ namespace BinaryTree
 
       while (true)
       {
-        Console.WriteLine("1. Прямой обход");
-        Console.WriteLine("2. Обратный обход");
-        Console.WriteLine("3. Центральный обход (лямбда)");
-        Console.WriteLine("4. Выход");
-        Console.Write("Выберите опцию: ");
+        Console.WriteLine("Список опций:")
+        Console.WriteLine("1. Прямой обход;");
+        Console.WriteLine("2. Обратный обход;");
+        Console.WriteLine("3. Центральный обход;");
+        Console.WriteLine("0. Выход.");
+        Console.Write("Ваш выбор: ");
 
-        var option = Console.ReadLine();
+        string option = Console.ReadLine();
 
         switch (option)
         {
@@ -45,16 +46,16 @@ namespace BinaryTree
             break;
 
           case "3":
-            Console.WriteLine("Центральный обход (лямбда):");
+            Console.WriteLine("Центральный обход:");
             var inOrder = tree.GetInOrderEnumerator();
             inOrder.ToList().ForEach(item => Console.WriteLine(item));
             break;
 
-          case "4":
+          case "0":
             return;
 
           default:
-            Console.WriteLine("Неверная опция!");
+            Console.WriteLine("Некорректный выбор опции!");
             break;
         }
       }
