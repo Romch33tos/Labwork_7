@@ -30,25 +30,15 @@ namespace BinaryTree
         switch (option)
         {
           case "1":
-            Console.WriteLine("Прямой обход:");
-            foreach (var item in tree)
-            {
-              Console.WriteLine(item);
-            }
+            PerformDirectTraversal(tree);
             break;
 
           case "2":
-            Console.WriteLine("Обратный обход:");
-            foreach (var item in tree.GetReverseEnumerator())
-            {
-              Console.WriteLine(item);
-            }
+            PerformReverseTraversal(tree);
             break;
 
           case "3":
-            Console.WriteLine("Центральный обход:");
-            var inOrder = tree.GetInOrderEnumerator();
-            inOrder.ToList().ForEach(item => Console.WriteLine(item));
+            PerformCentralTraversal(tree);
             break;
 
           case "0":
@@ -59,6 +49,31 @@ namespace BinaryTree
             break;
         }
       }
+    }
+
+    static void PerformDirectTraversal(BinaryTree<int> tree)
+    {
+      Console.WriteLine("Прямой обход:");
+      foreach (var item in tree)
+      {
+        Console.WriteLine(item);
+      }
+    }
+
+    static void PerformReverseTraversal(BinaryTree<int> tree)
+    {
+      Console.WriteLine("Обратный обход:");
+      foreach (var item in tree.GetReverseEnumerator())
+      {
+        Console.WriteLine(item);
+      }
+    }
+
+    static void PerformCentralTraversal(BinaryTree<int> tree)
+    {
+      Console.WriteLine("Центральный обход:");
+      var inOrder = tree.GetInOrderEnumerator();
+      inOrder.ToList().ForEach(item => Console.WriteLine(item));
     }
   }
 }
