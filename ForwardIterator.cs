@@ -26,7 +26,6 @@ namespace BinaryTree
         _current = FindLeftmost(_root);
         return _current != null;
       }
-
       _current = Next(_current);
       return _current != null;
     }
@@ -52,6 +51,7 @@ namespace BinaryTree
       {
         node = node.Left;
       }
+      
       return node;
     }
 
