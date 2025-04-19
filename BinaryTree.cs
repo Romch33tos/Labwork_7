@@ -36,12 +36,18 @@ namespace BinaryTree
 
     public void InOrderTraversal(TreeTraversalDelegate action)
     {
-      if (action == null) return;
+      if (action == null)
+      {
+        return;
+      }
 
       Action<BinaryTreeNode<T>> traverse = null;
       traverse = (node) =>
       {
-        if (node == null) return;
+        if (node == null) 
+        {
+          return;
+        }
         traverse(node.Left);
         action(node.Value);
         traverse(node.Right);
