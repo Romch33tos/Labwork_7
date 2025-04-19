@@ -1,49 +1,46 @@
-﻿using System;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace BinaryTree
 {
   class Program
   {
+    private static BinaryTree<int> tree = new BinaryTree<int>();
+
     static void Main(string[] args)
     {
-      var tree = new BinaryTree<int>();
-      tree.Add(5);
-      tree.Add(3);
-      tree.Add(7);
-      tree.Add(2);
-      tree.Add(4);
-      tree.Add(6);
-      tree.Add(8);
-
       while (true)
       {
-        Console.WriteLine("Список опций:");
-        Console.WriteLine("1. Прямой обход;");
-        Console.WriteLine("2. Обратный обход;");
-        Console.WriteLine("3. Центральный обход;");
-        Console.WriteLine("0. Выход.");
+        Console.WriteLine("\nСписок опций");
+        Console.WriteLine("1. Добавить элемент");
+        Console.WriteLine("2. Прямой обход");
+        Console.WriteLine("3. Обратный обход");
+        Console.WriteLine("4. Центральный обход");
+        Console.WriteLine("5. Выход");
         Console.Write("Ваш выбор: ");
-
         string option = Console.ReadLine();
 
         switch (option)
         {
           case "1":
-            PerformDirectTraversal(tree);
+            AddElement();
             break;
 
           case "2":
-            PerformReverseTraversal(tree);
+            ForwardTraversal();
             break;
 
           case "3":
-            PerformCentralTraversal(tree);
+            ReverseTraversal();
             break;
 
-          case "0":
+          case "4":
+            InOrderTraversalWithDelegate();
+            break;
+            
+          case "5":
             return;
-
+            
           default:
             Console.WriteLine("Некорректный выбор опции!");
             break;
@@ -51,29 +48,51 @@ namespace BinaryTree
       }
     }
 
-    static void PerformDirectTraversal(BinaryTree<int> tree)
+    private static void AddElement()
     {
-      Console.WriteLine("Прямой обход:");
+      Console.Write("Введите число для добавления: ");
+      if (int.TryParse(Console.ReadLine(), out int value))
+      {
+        tree.Add(value);
+        Console.WriteLine($"Элемент {value} добавлен в дерево.");
+      }
+      else
+      {
+        Console.WriteLine("Некорректный ввод числа!");
+      }
+    }
+
+    private static void ForwardTraversal()
+    {
+      Console.WriteLine("Прямой обход дерева (итератор):");
       foreach (var item in tree)
       {
-        Console.WriteLine(item);
+        Console.Write(item + " ");
       }
+      Console.WriteLine();
     }
 
-    static void PerformReverseTraversal(BinaryTree<int> tree)
+    private static void ReverseTraversal()
     {
-      Console.WriteLine("Обратный обход:");
+      Console.WriteLine("Обратный обход дерева (итератор):");
       foreach (var item in tree.GetReverseEnumerator())
       {
-        Console.WriteLine(item);
+        Console.Write(item + " ");
       }
+      Console.WriteLine();
     }
 
-    static void PerformCentralTraversal(BinaryTree<int> tree)
+    private static void InOrderTraversalWithDelegate()
     {
-      Console.WriteLine("Центральный обход:");
-      var inOrder = tree.GetInOrderEnumerator();
-      inOrder.ToList().ForEach(item => Console.WriteLine(item));
+      Console.WriteLine("Центральный обход дерева (делегат):");
+
+      BinaryTree<int>.TreeTraversalDelegate processNode = (value) =>
+      {
+        Console.Write(value + " ");
+      };
+
+      tree.InOrderTraversal(processNode);
+      Console.WriteLine();
     }
   }
 }
