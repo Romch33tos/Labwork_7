@@ -8,6 +8,8 @@ namespace BinaryTree
   {
     private BinaryTreeNode<T> _root;
 
+    public delegate void TreeTraversalDelegate(T value);
+
     public void Add(T value)
     {
       _root = AddRecursive(_root, null, value);
@@ -32,6 +34,22 @@ namespace BinaryTree
       return node;
     }
 
+    public void InOrderTraversal(TreeTraversalDelegate action)
+    {
+      if (action == null) return;
+
+      Action<BinaryTreeNode<T>> traverse = null;
+      traverse = (node) =>
+      {
+        if (node == null) return;
+        traverse(node.Left);
+        action(node.Value);
+        traverse(node.Right);
+      };
+
+      traverse(_root);
+    }
+
     public IEnumerator<T> GetEnumerator()
     {
       return new ForwardIterator<T>(_root);
@@ -44,54 +62,43 @@ namespace BinaryTree
 
     public IEnumerable<T> GetReverseEnumerator()
     {
-      BinaryTreeNode<T> current = _root;
-      var stack = new Stack<BinaryTreeNode<T>>();
-      bool done = false;
-
-      while (!done)
-      {
-        if (current != null)
-        {
-          stack.Push(current);
-          current = current.Right;
-        }
-        else
-        {
-          if (stack.Count > 0)
-          {
-            current = stack.Pop();
-            yield return current.Value;
-            current = current.Left;
-          }
-          else
-          {
-            done = true;
-          }
-        }
-      }
+      return new ReverseEnumerable<T>(_root);
     }
 
-    public IEnumerable<T> GetInOrderEnumerator()
+    private class ReverseEnumerable<TNode> : IEnumerable<TNode> where TNode : IComparable<TNode>
     {
-      return InOrderTraversal(_root);
-    }
+      private readonly BinaryTreeNode<TNode> _root;
 
-    private IEnumerable<T> InOrderTraversal(BinaryTreeNode<T> node)
-    {
-      if (node != null)
+      public ReverseEnumerable(BinaryTreeNode<TNode> root)
       {
-        foreach (var left in InOrderTraversal(node.Left))
-        {
-          yield return left;
-        }
-
-        yield return node.Value;
-
-        foreach (var right in InOrderTraversal(node.Right))
-        {
-          yield return right;
-        }
+        _root = root;
       }
+
+      public IEnumerator<TNode> GetEnumerator()
+      {
+        return new ReverseIterator<TNode>(_root);
+      }
+
+      IEnumerator IEnumerable.GetEnumerator()
+      {
+        return GetEnumerator();
+      }
+    }
+  }
+
+  public class BinaryTreeNode<T> where T : IComparable<T>
+  {
+    public T Value { get; set; }
+    public BinaryTreeNode<T> Left { get; set; }
+    public BinaryTreeNode<T> Right { get; set; }
+    public BinaryTreeNode<T> Parent { get; set; }
+
+    public BinaryTreeNode(T value)
+    {
+      Value = value;
+      Left = null;
+      Right = null;
+      Parent = null;
     }
   }
 }
